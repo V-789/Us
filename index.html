@@ -1,177 +1,181 @@
-<!DOCTYPE html>
-<html lang="en">
+ <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Secret Puzzle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Just for You</title>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #f0e6ff, #cdefff);
+      background: linear-gradient(#f0f4ff, #e0eaff);
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
       overflow: hidden;
-      text-align: center;
-    }
+      flex-direction: column;
+    }#puzzle {
+  display: grid;
+  grid-template-columns: repeat(6, 60px);
+  gap: 10px;
+  margin-bottom: 40px;
+  animation: fadeIn 1s ease-in;
+}
 
-    h2 {
-      color: #333;
-      margin-bottom: 10px;
-    }
+.letter {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  font-weight: bold;
+  background: white;
+  border: 2px solid #aaa;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+.letter:hover {
+  transform: scale(1.1);
+}
 
-    .hint {
-      font-size: 14px;
-      color: #777;
-      margin-bottom: 20px;
-    }
+#solvedName {
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #333;
+}
 
-    .puzzle-box {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      max-width: 300px;
-      justify-content: center;
-    }
+#messageContainer {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 2s ease-in forwards;
+}
 
-    .letter {
-      width: 60px;
-      height: 60px;
-      font-size: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fff;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      transition: 0.3s ease;
-      user-select: none;
-    }
+.typewriter {
+  font-size: 20px;
+  color: white;
+  text-shadow: 1px 1px 3px #000;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 90%;
+  text-align: center;
+  margin-top: 10px;
+}
 
-    .letter.correct {
-      background: #caffd3;
-      border-color: #34a853;
-      color: #34a853;
-      pointer-events: none;
-      transform: scale(1.1);
-    }
+#replyForm {
+  margin-top: 20px;
+  display: flex;
+}
 
-    .letter.wrong {
-      background: #ffe0e0;
-      border-color: #e53935;
-      color: #e53935;
-    }
+#replyInput {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  width: 250px;
+}
 
-    #message {
-      margin-top: 30px;
-      font-size: 18px;
-      display: none;
-      color: #222;
-    }
+#sendBtn {
+  padding: 10px 20px;
+  margin-left: 10px;
+  background-color: #5c67f2;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
 
-    .reply {
-      margin-top: 15px;
-      display: none;
-    }
+#herImage {
+  display: none;
+  max-width: 300px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  animation: fadeIn 1.5s ease-in forwards;
+}
 
-    .reply a {
-      color: #0077cc;
-      text-decoration: none;
-      font-weight: bold;
-    }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: pink;
-      transform: rotate(45deg);
-      animation: float 10s linear infinite;
-      opacity: 0.3;
-    }
-
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: pink;
-      border-radius: 50%;
-    }
-
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      top: 0;
-      left: -10px;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(100vh) rotate(45deg);
-      }
-      100% {
-        transform: translateY(-10vh) rotate(45deg);
-      }
-    }
   </style>
 </head>
 <body>
-  <h2>A little challenge for you 💌</h2>
-  <div class="hint">Tap the letters in the right order to unlock the secret.</div>
+  <div id="solvedName"></div>
+  <div id="puzzle"></div>  <div id="messageContainer">
+    <img id="herImage" src="image.jpg" alt="Rihope" />
+    <div class="typewriter" id="typedText"></div>
+    <form id="replyForm" action="https://formspree.io/f/mwkgbdgj" method="POST">
+      <input id="replyInput" name="reply" placeholder="Write your reply..." required />
+      <button id="sendBtn" type="submit">Send</button>
+    </form>
+  </div>  <script>
+    const correctName = "RIHOPE";
+    const allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let currentGuess = "";
 
-  <div class="puzzle-box" id="puzzle"></div>
+    const puzzle = document.getElementById("puzzle");
+    const solvedName = document.getElementById("solvedName");
+    const herImage = document.getElementById("herImage");
+    const typedText = document.getElementById("typedText");
+    const messageContainer = document.getElementById("messageContainer");
 
-  <div id="message">
-    Hey u did it!<br>
-    <strong>I miss you Rihope ❤😏</strong>
-  </div>
+    // Generate a random grid with correct name letters mixed in
+    const generateGrid = () => {
+      const mixed = [];
+      for (let i = 0; i < correctName.length; i++) mixed.push(correctName[i]);
+      while (mixed.length < 18) {
+        const randomChar = allLetters[Math.floor(Math.random() * 26)];
+        mixed.push(randomChar);
+      }
+      mixed.sort(() => 0.5 - Math.random());
 
-  <div class="reply" id="reply">
-    Want to reply? <br>
-    <a href="mailto:rmhh3q0y@anonaddy.me">rmhh3q0y@anonaddy.me</a>
-  </div>
+      mixed.forEach((letter) => {
+        const div = document.createElement("div");
+        div.className = "letter";
+        div.textContent = letter;
+        div.onclick = () => handleLetterClick(letter, div);
+        puzzle.appendChild(div);
+      });
+    };
 
-  <!-- Floating hearts -->
-  <div class="heart" style="left: 15%; animation-delay: 0s;"></div>
-  <div class="heart" style="left: 45%; animation-delay: 3s;"></div>
-  <div class="heart" style="left: 75%; animation-delay: 5s;"></div>
-
-  <script>
-    const secret = "RIELEDOWNS";
-    const letters = secret.split('');
-    const shuffled = [...letters, ..."QWERTZLXCVBN"].sort(() => Math.random() - 0.5);
-    const puzzleBox = document.getElementById('puzzle');
-    let index = 0;
-
-    shuffled.forEach(l => {
-      const div = document.createElement('div');
-      div.className = 'letter';
-      div.textContent = l;
-      div.onclick = () => {
-        if (l === secret[index]) {
-          div.classList.add('correct');
-          index++;
-          if (index === secret.length) {
-            document.getElementById('message').style.display = 'block';
-            document.getElementById('reply').style.display = 'block';
-          }
-        } else {
-          div.classList.add('wrong');
-          setTimeout(() => div.classList.remove('wrong'), 500);
+    function handleLetterClick(letter, element) {
+      if (currentGuess.length < correctName.length) {
+        currentGuess += letter;
+        solvedName.textContent = currentGuess;
+        element.style.visibility = "hidden";
+        if (currentGuess === correctName) {
+          showMessage();
         }
-      };
-      puzzleBox.appendChild(div);
-    });
-  </script>
-</body>
+      }
+    }
+
+    function showMessage() {
+      puzzle.style.display = "none";
+      solvedName.style.display = "none";
+      herImage.style.display = "block";
+      messageContainer.style.display = "flex";
+      typeWriterText("There you are... I've missed this smile 🥺❤\nI hope you're doing well and everything is okay with you❤\n_ From Someone who misses you 🥺_");
+    }
+
+    function typeWriterText(text) {
+      let i = 0;
+      function typing() {
+        if (i < text.length) {
+          typedText.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(typing, 50);
+        }
+      }
+      typing();
+    }
+
+    generateGrid();
+  </script></body>
 </html>
